@@ -43070,7 +43070,7 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
           return this.http.patch(`${this.eventsUrl}/${event.id}`, event);
         }
         create(event) {
-          return this.http.post(this.eventsUrl, event);
+          return this.http.post(`${this.eventsUrl}`, event);
         }
         remove(id) {
           return this.http.delete(`${this.eventsUrl}/${id}`);
@@ -50975,7 +50975,55 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
   var event_editor_component_default;
   var init_event_editor_component = __esm({
     "src/app/page/event-editor/event-editor.component.html"() {
-      event_editor_component_default = '<div class="row">\r\n  <div *ngIf="(event$ | async) as event" class="col-6 offset-3">\r\n    <form #eventForm="ngForm" (ngSubmit)="onUpdate(eventForm, event)">\r\n      <div class="form-group">\r\n        <label for="">Name</label>\r\n        <input name="name" [(ngModel)]="event.name" type="text" class="form-control" pattern=".{8,25}" required>\r\n        <div class="message">\r\n          <div [hidden]="eventForm.controls.name?.valid" class="error-message">\r\n            The name must be minimum 8 maximum 25 characters.\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class="form-group">\r\n        <label for="">Date</label>\r\n        <input name="date" [(ngModel)]="event.date" type="text" class="form-control"\r\n          pattern="^([0-9]|1[0-2])\\/([0-9]|[1-2][0-9]|3[0-1])\\/\\d{4}" required>\r\n        <div class="message">\r\n          <div [hidden]="eventForm.controls.date?.valid" class="error-message">\r\n            The date must be in format DD/MM/YYYY.\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class="form-group">\r\n        <label for="">Time</label>\r\n        <input name="time" [(ngModel)]="event.time" type="text" class="form-control" pattern="^(0[0-9]|1[0-2])(am|pm)"\r\n          required>\r\n        <div class="message">\r\n          <div [hidden]="eventForm.controls.time?.valid" class="error-message">\r\n            The time must be HHam or HHpm.\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class="form-group">\r\n        <label for="">Country</label>\r\n        <input name="country" [(ngModel)]="event.location.country" type="text" class="form-control"\r\n          pattern="[A-Z\\s]{5,25}" required>\r\n        <div class="message">\r\n          <div [hidden]="eventForm.controls.country?.valid" class="error-message">\r\n            The country must be minimum 5 maximum 25 characters and uppercase.\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class="form-group">\r\n        <label for="">City</label>\r\n        <input name="city" [(ngModel)]="event.location.city" type="text" class="form-control" pattern="^[A-Z].{4,24}"\r\n          required>\r\n        <div class="message">\r\n          <div [hidden]="eventForm.controls.city?.valid" class="error-message">\r\n            The city must be minimum 5 maximum 25 characters and must start with\r\n            uppercase character.\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class="form-group">\r\n        <label for="">Address</label>\r\n        <input name="address" [(ngModel)]="event.location.address" type="text" class="form-control" pattern=".{10,50}"\r\n          required>\r\n        <div class="message">\r\n          <div [hidden]="eventForm.controls.address?.valid" class="error-message">\r\n            The address must be minimum 10 maximum 50 characters.\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <button [disabled]="eventForm.invalid || updating" type="submit" class="btn btn-primary btn-block btn-lg">\r\n        <i *ngIf="!updating" class="fa fa-save"></i>\r\n        <i *ngIf="updating" class="fa fa-refresh"></i>\r\n      </button>\r\n    </form>\r\n  </div>\r\n</div>\r\n';
+      event_editor_component_default = `<div class="row">\r
+  <div *ngIf="(event$ | async) as event" class="col-6 offset-3">\r
+    <form #eventForm="ngForm" (ngSubmit)="onUpdate(eventForm, event)">\r
+      <div class="form-group">\r
+        <label for="">Name</label>\r
+        <input name="name" [(ngModel)]="event.name" type="text" class="form-control" pattern=".{8,}" required>\r
+        <!--<div [hidden]="eventForm.controls.name?.valid" class="error-message">\r
+          The name of the event must be\r
+        </div>-->\r
+        <div class="alert alert-danger" *ngIf="eventForm.controls.name?.touched && !eventForm.controls.name.valid">\r
+          <div *ngIf="eventForm.controls.name.errors?.['required']">Name of the event is required.</div>\r
+          <div *ngIf="eventForm.controls.name.errors?.['pattern']">Name of the event doesn't match the pattern.</div>\r
+        </div>\r
+      </div>\r
+      <div class="form-group">\r
+        <label for="">Date</label>\r
+        <input name="date" [(ngModel)]="event.date" type="text" class="form-control" pattern="/^(\\d{2}(\\-)){2}\\d{4}$/"\r
+          required>\r
+          <div class="alert alert-danger" *ngIf="eventForm.controls.date?.touched && !eventForm.controls.date.valid">\r
+            <div *ngIf="eventForm.controls.date.errors?.['required']">Date of the event is required.</div>\r
+            <div *ngIf="eventForm.controls.date.errors?.['pattern']">Date of the event doesn't match the pattern.</div>\r
+          </div>\r
+      </div>\r
+      <div class="form-group">\r
+        <label for="">Time</label>\r
+        <input name="time" [(ngModel)]="event.time" type="text" class="form-control" pattern="/^(\\d){2}[a|pm]$/"\r
+          required>\r
+          <div class="alert alert-danger" *ngIf="eventForm.controls.time?.touched && !eventForm.controls.time.valid">\r
+            <div *ngIf="eventForm.controls.time.errors?.['required']">Time of the event is required.</div>\r
+            <div *ngIf="eventForm.controls.time.errors?.['pattern']">Time of the event doesn't match the pattern.</div>\r
+          </div>\r
+      </div>\r
+      <div class="form-group">\r
+        <label for="">Location</label>\r
+        <input name="location" [(ngModel)]="event.location" type="text" class="form-control"\r
+          pattern="/^[A-Z][a-z]{4,24}" required>\r
+          <div class="alert alert-danger" *ngIf="eventForm.controls.location?.touched && !eventForm.controls.location.valid">\r
+            <div *ngIf="eventForm.controls.location.errors?.['required']">Location of the event is required.</div>\r
+            <div *ngIf="eventForm.controls.location.errors?.['pattern']">Location of the event doesn't match the pattern.</div>\r
+          </div>\r
+      </div>\r
+\r
+      <button type="submit" class="btn btn-primary btn-block btn-lg">\r
+        <i class="fa fa-save"></i>\r
+      </button>\r
+    </form>\r
+  </div>\r
+</div>\r
+`;
     }
   });
 
@@ -50995,17 +51043,14 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
           this.eventService = eventService;
           this.router = router;
           this.event$ = this.activatedRoute.params.pipe(switchMap((params) => this.eventService.get(params["id"])));
-          this.updating = false;
         }
         ngOnInit() {
         }
         onUpdate(form, event) {
-          this.updating = true;
           if (event.id === 0) {
             this.eventService.create(event);
-            this.router.navigate([""]);
           } else {
-            this.eventService.update(event).subscribe((ev) => this.router.navigate([""]));
+            this.eventService.update(event);
           }
         }
       };

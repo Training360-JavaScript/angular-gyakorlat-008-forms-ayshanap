@@ -3,24 +3,41 @@
     <form #eventForm="ngForm" (ngSubmit)="onUpdate(eventForm, event)">
       <div class="form-group">
         <label for="">Name</label>
-        <input name="name" [(ngModel)]="event.name" type="text"
-          class="form-control" pattern=".{8,}" required>
-        <div [hidden]="eventForm.controls.name?.valid" class="error-message">
-          The name of the event must be...
+        <input name="name" [(ngModel)]="event.name" type="text" class="form-control" pattern=".{8,}" required>
+        <!--<div [hidden]="eventForm.controls.name?.valid" class="error-message">
+          The name of the event must be
+        </div>-->
+        <div class="alert alert-danger" *ngIf="eventForm.controls.name?.touched && !eventForm.controls.name.valid">
+          <div *ngIf="eventForm.controls.name.errors?.['required']">Name of the event is required.</div>
+          <div *ngIf="eventForm.controls.name.errors?.['pattern']">Name of the event doesn't match the pattern.</div>
         </div>
       </div>
       <div class="form-group">
         <label for="">Date</label>
-        <input name="date" [(ngModel)]="event.date" type="text"
-          class="form-control">
+        <input name="date" [(ngModel)]="event.date" type="text" class="form-control" pattern="/^(\d{2}(\-)){2}\d{4}$/"
+          required>
+          <div class="alert alert-danger" *ngIf="eventForm.controls.date?.touched && !eventForm.controls.date.valid">
+            <div *ngIf="eventForm.controls.date.errors?.['required']">Date of the event is required.</div>
+            <div *ngIf="eventForm.controls.date.errors?.['pattern']">Date of the event doesn't match the pattern.</div>
+          </div>
       </div>
       <div class="form-group">
         <label for="">Time</label>
-        <input name="time" [(ngModel)]="event.time" type="text" class="form-control">
+        <input name="time" [(ngModel)]="event.time" type="text" class="form-control" pattern="/^(\d){2}[a|pm]$/"
+          required>
+          <div class="alert alert-danger" *ngIf="eventForm.controls.time?.touched && !eventForm.controls.time.valid">
+            <div *ngIf="eventForm.controls.time.errors?.['required']">Time of the event is required.</div>
+            <div *ngIf="eventForm.controls.time.errors?.['pattern']">Time of the event doesn't match the pattern.</div>
+          </div>
       </div>
       <div class="form-group">
         <label for="">Location</label>
-        <input name="location" [(ngModel)]="event.location" type="text" class="form-control">
+        <input name="location" [(ngModel)]="event.location" type="text" class="form-control"
+          pattern="/^[A-Z][a-z]{4,24}" required>
+          <div class="alert alert-danger" *ngIf="eventForm.controls.location?.touched && !eventForm.controls.location.valid">
+            <div *ngIf="eventForm.controls.location.errors?.['required']">Location of the event is required.</div>
+            <div *ngIf="eventForm.controls.location.errors?.['pattern']">Location of the event doesn't match the pattern.</div>
+          </div>
       </div>
 
       <button type="submit" class="btn btn-primary btn-block btn-lg">

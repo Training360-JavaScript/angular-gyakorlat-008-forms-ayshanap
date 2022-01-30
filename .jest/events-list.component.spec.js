@@ -43015,7 +43015,7 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
           return this.http.patch(`${this.eventsUrl}/${event.id}`, event);
         }
         create(event) {
-          return this.http.post(this.eventsUrl, event);
+          return this.http.post(`${this.eventsUrl}`, event);
         }
         remove(id) {
           return this.http.delete(`${this.eventsUrl}/${id}`);
@@ -43284,14 +43284,13 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
   var init_events_list_component = __esm({
     "src/app/page/events-list/events-list.component.html"() {
       events_list_component_default = `<div>\r
+  <button class="btn btn-success" routerLink="\`\${eventsUrl}/0\`"></button>\r
   <div class="row my-2">\r
     <div class="col-10">\r
       <h3>All of the events should show below</h3>\r
     </div>\r
     <div class="col-2 text-right">\r
-      <button [routerLink]="['event/' + 0]" class="btn btn-success btn-block">\r
-        <i class="fa fa-plus"></i>\r
-      </button>\r
+\r
     </div>\r
   </div>\r
 \r
@@ -43310,17 +43309,16 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
         <td>{{event.name}}</td>\r
         <td>{{event.date}} </td>\r
         <td>{{event.time}}</td>\r
-        <td>{{event.location.address}}, {{event.location.city}},\r
-          {{event.location.country}}</td>\r
+        <td>{{event.location}}</td>\r
         <td>\r
           <div class="btn-group">\r
             <button [routerLink]="['event/' + event.id]" class="btn btn-info">\r
               <i class="fa fa-pencil"></i>\r
             </button>\r
-            <button (click)="onDelete(event.id)" class="btn btn-danger"\r
-              type="button">\r
-              <i class="fa fa-trash"></i>\r
+            <button [routerLink]="['event/' + event.id]" (click)="onDelete(event)" class="btn btn-danger">\r
+              <i class="fa fa-delete"></i>\r
             </button>\r
+\r
           </div>\r
         </td>\r
       </tr>\r
@@ -47240,14 +47238,8 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
         }
         ngOnInit() {
         }
-        onDelete(id) {
-          this.eventService.remove(id).subscribe((ev) => this.router.navigate([""]));
-        }
-        onUpdate(event) {
-          if (event.id === 0) {
-            this.eventService.create(event);
-          }
-          this.eventService.update(event);
+        onDelete(event) {
+          this.eventService.remove(event);
         }
       };
       EventsListComponent = __decorateClass([
